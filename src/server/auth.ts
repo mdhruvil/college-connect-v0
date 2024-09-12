@@ -16,6 +16,8 @@ import {
   verificationTokens,
 } from "~/server/db/schema";
 
+type DBUser = typeof users.$inferSelect;
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -28,13 +30,12 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       // role: UserRole;
-    } & DefaultSession["user"];
+    } & DefaultSession["user"] &
+      DBUser;
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface User extends DBUser {}
 }
 
 /**
@@ -43,12 +44,15 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  pages: {
+    newUser: "/onboarding",
+  },
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
       user: {
         ...session.user,
-        id: user.id,
+        ...user,
       },
     }),
   },
