@@ -14,7 +14,9 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = sqliteTableCreator((name) => `college-connect_${name}`);
+export const createTable = sqliteTableCreator(
+  (name) => `college-connect_${name}`,
+);
 
 export const posts = createTable(
   "post",
@@ -28,31 +30,149 @@ export const posts = createTable(
       .default(sql`(unixepoch())`)
       .notNull(),
     updatedAt: int("updatedAt", { mode: "timestamp" }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     createdByIdIdx: index("created_by_idx").on(example.createdById),
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
 
-export const users = createTable("user", {
+export const users = createTable(
+  "user",
+  {
+    id: text("id", { length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    name: text("name", { length: 255 }),
+    email: text("email", { length: 255 }).notNull(),
+    emailVerified: int("email_verified", {
+      mode: "timestamp",
+    }).default(sql`(unixepoch())`),
+    image: text("image", { length: 255 }),
+    enrollmentNo: int("enrollment_no", { mode: "number" }).notNull().default(0),
+    degree: text("degree").notNull().default("Not Added"),
+    yearOfStudy: int("year_of_study", { mode: "number" }).notNull().default(1),
+    department: text("department").notNull().default("Not Added"),
+  },
+  (self) => ({
+    userEnrollmentNoIdx: index("user_enrollment_no_idx").on(self.enrollmentNo),
+  }),
+);
+
+export const usersRelations = relations(users, ({ many }) => ({
+  accounts: many(accounts),
+  clubToMembers: many(clubToMembers),
+  eventRegistrations: many(eventRegistrations),
+}));
+
+export const clubs = createTable("clubs", {
   id: text("id", { length: 255 })
     .notNull()
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text("name", { length: 255 }),
-  email: text("email", { length: 255 }).notNull(),
-  emailVerified: int("email_verified", {
-    mode: "timestamp",
-  }).default(sql`(unixepoch())`),
+  name: text("name", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  createdById: text("created_by", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  createdAt: int("created_at", { mode: "timestamp" })
+    .default(sql`(unixepoch())`)
+    .notNull(),
   image: text("image", { length: 255 }),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
-  accounts: many(accounts),
+export const clubsRelations = relations(clubs, ({ one, many }) => ({
+  creator: one(users, { fields: [clubs.createdById], references: [users.id] }),
+  clubToMembers: many(clubToMembers),
 }));
+
+export const clubToMembers = createTable(
+  "club_to_members",
+  {
+    clubId: text("club_id", { length: 255 })
+      .notNull()
+      .references(() => clubs.id),
+    memberId: text("member_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    postition: text("postition", { length: 255 }),
+  },
+  (self) => ({
+    pk: primaryKey({ columns: [self.clubId, self.memberId] }),
+  }),
+);
+
+export const clubToMembersRelations = relations(clubToMembers, ({ one }) => ({
+  club: one(clubs, { fields: [clubToMembers.clubId], references: [clubs.id] }),
+  member: one(users, {
+    fields: [clubToMembers.memberId],
+    references: [users.id],
+  }),
+}));
+
+export const events = createTable("events", {
+  id: text("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  createdById: text("created_by", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  createdAt: int("created_at", { mode: "timestamp" })
+    .default(sql`(unixepoch())`)
+    .notNull(),
+  clubId: text("club_id", { length: 255 })
+    .notNull()
+    .references(() => clubs.id),
+  image: text("image", { length: 255 }),
+  eventDate: int("event_date", { mode: "timestamp" }).notNull(),
+  location: text("location", { length: 255 }),
+  type: text("type", { length: 255, enum: ["ONLINE", "OFFLINE"] }),
+});
+
+export const eventsRelations = relations(events, ({ one, many }) => ({
+  creator: one(users, { fields: [events.createdById], references: [users.id] }),
+  club: one(clubs, { fields: [events.clubId], references: [clubs.id] }),
+  eventRegistrations: many(eventRegistrations),
+}));
+
+export const eventRegistrations = createTable(
+  "event_registrations",
+  {
+    eventId: text("event_id", { length: 255 })
+      .notNull()
+      .references(() => events.id),
+    memberId: text("member_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    status: text("status", { length: 255 }),
+    registeredAt: int("registered_at", { mode: "timestamp" })
+      .default(sql`(unixepoch())`)
+      .notNull(),
+  },
+  (self) => ({
+    pk: primaryKey({ columns: [self.eventId, self.memberId] }),
+  }),
+);
+
+export const eventRegistrationsRelations = relations(
+  eventRegistrations,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventRegistrations.eventId],
+      references: [events.id],
+    }),
+    member: one(users, {
+      fields: [eventRegistrations.memberId],
+      references: [users.id],
+    }),
+  }),
+);
 
 export const accounts = createTable(
   "account",
@@ -78,7 +198,7 @@ export const accounts = createTable(
       columns: [account.provider, account.providerAccountId],
     }),
     userIdIdx: index("account_user_id_idx").on(account.userId),
-  })
+  }),
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -96,7 +216,7 @@ export const sessions = createTable(
   },
   (session) => ({
     userIdIdx: index("session_userId_idx").on(session.userId),
-  })
+  }),
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -112,5 +232,5 @@ export const verificationTokens = createTable(
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  }),
 );
