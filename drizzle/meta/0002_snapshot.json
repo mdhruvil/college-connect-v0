@@ -88,9 +88,7 @@
       "indexes": {
         "account_user_id_idx": {
           "name": "account_user_id_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -99,22 +97,15 @@
           "name": "college-connect_account_user_id_college-connect_user_id_fk",
           "tableFrom": "college-connect_account",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "college-connect_account_provider_provider_account_id_pk": {
-          "columns": [
-            "provider",
-            "provider_account_id"
-          ],
+          "columns": ["provider", "provider_account_id"],
           "name": "college-connect_account_provider_provider_account_id_pk"
         }
       },
@@ -151,12 +142,8 @@
           "name": "college-connect_club_to_members_club_id_college-connect_clubs_id_fk",
           "tableFrom": "college-connect_club_to_members",
           "tableTo": "college-connect_clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -164,22 +151,15 @@
           "name": "college-connect_club_to_members_member_id_college-connect_user_id_fk",
           "tableFrom": "college-connect_club_to_members",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "member_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["member_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "college-connect_club_to_members_club_id_member_id_pk": {
-          "columns": [
-            "club_id",
-            "member_id"
-          ],
+          "columns": ["club_id", "member_id"],
           "name": "college-connect_club_to_members_club_id_member_id_pk"
         }
       },
@@ -238,12 +218,8 @@
           "name": "college-connect_clubs_created_by_college-connect_user_id_fk",
           "tableFrom": "college-connect_clubs",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -290,12 +266,8 @@
           "name": "college-connect_event_registrations_event_id_college-connect_events_id_fk",
           "tableFrom": "college-connect_event_registrations",
           "tableTo": "college-connect_events",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["event_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -303,22 +275,15 @@
           "name": "college-connect_event_registrations_member_id_college-connect_user_id_fk",
           "tableFrom": "college-connect_event_registrations",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "member_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["member_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "college-connect_event_registrations_event_id_member_id_pk": {
-          "columns": [
-            "event_id",
-            "member_id"
-          ],
+          "columns": ["event_id", "member_id"],
           "name": "college-connect_event_registrations_event_id_member_id_pk"
         }
       },
@@ -405,12 +370,8 @@
           "name": "college-connect_events_created_by_college-connect_user_id_fk",
           "tableFrom": "college-connect_events",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -418,12 +379,8 @@
           "name": "college-connect_events_club_id_college-connect_clubs_id_fk",
           "tableFrom": "college-connect_events",
           "tableTo": "college-connect_clubs",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -474,16 +431,12 @@
       "indexes": {
         "created_by_idx": {
           "name": "created_by_idx",
-          "columns": [
-            "created_by"
-          ],
+          "columns": ["created_by"],
           "isUnique": false
         },
         "name_idx": {
           "name": "name_idx",
-          "columns": [
-            "name"
-          ],
+          "columns": ["name"],
           "isUnique": false
         }
       },
@@ -492,12 +445,8 @@
           "name": "college-connect_post_created_by_college-connect_user_id_fk",
           "tableFrom": "college-connect_post",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -533,9 +482,7 @@
       "indexes": {
         "session_userId_idx": {
           "name": "session_userId_idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -544,12 +491,8 @@
           "name": "college-connect_session_userId_college-connect_user_id_fk",
           "tableFrom": "college-connect_session",
           "tableTo": "college-connect_user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -663,10 +606,7 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "college-connect_verification_token_identifier_token_pk": {
-          "columns": [
-            "identifier",
-            "token"
-          ],
+          "columns": ["identifier", "token"],
           "name": "college-connect_verification_token_identifier_token_pk"
         }
       },
