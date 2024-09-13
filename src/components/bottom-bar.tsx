@@ -7,7 +7,7 @@ import { cn } from "~/lib/utils";
 export function BottomBar() {
   const pathName = usePathname();
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex items-center justify-around gap-4 border-t p-4 shadow-md">
+    <div className="fixed bottom-0 left-0 right-0 flex items-center justify-around gap-4 border-t bg-white p-4 shadow-md">
       {NAV_ITEMS.map((item) => (
         <Link key={item.label} href={item.href} className="h-full w-full">
           <div className="flex flex-col items-center gap-1">

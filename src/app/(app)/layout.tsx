@@ -4,9 +4,9 @@ export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="relative">
-      {children}
+    <>
+      <div className="h-[92vh] overflow-y-auto">{children}</div>
       <BottomBar />
-    </div>
+    </>
   );
 }

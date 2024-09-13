@@ -91,3 +91,9 @@ export const NAV_ITEMS: Array<{
     icon: UserCircle2Icon,
   },
 ];
+
+export enum ClubPosition {
+  MEMBER = "Member",
+  CREATOR = "Creator",
+  HEAD = "Head",
+}

@@ -1,0 +1,1 @@
+CREATE INDEX `user_enrollment_no_idx` ON `college-connect_user` (`enrollment_no`);

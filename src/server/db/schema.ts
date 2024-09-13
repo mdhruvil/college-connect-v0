@@ -7,6 +7,7 @@ import {
   text,
 } from "drizzle-orm/sqlite-core";
 import { type AdapterAccount } from "next-auth/adapters";
+import { ClubPosition } from "~/lib/constants";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -98,7 +99,10 @@ export const clubToMembers = createTable(
     memberId: text("member_id", { length: 255 })
       .notNull()
       .references(() => users.id),
-    postition: text("postition", { length: 255 }),
+    postition: text("postition", {
+      length: 255,
+      enum: [ClubPosition.MEMBER, ClubPosition.CREATOR, ClubPosition.HEAD],
+    }),
   },
   (self) => ({
     pk: primaryKey({ columns: [self.clubId, self.memberId] }),
