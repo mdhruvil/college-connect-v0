@@ -14,6 +14,8 @@ import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 
+import { tracing } from "@baselime/node-opentelemetry/trpc";
+
 /**
  * 1. CONTEXT
  *
@@ -108,7 +110,10 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  .use(tracing({ collectInput: true }))
+  .use(timingMiddleware);
 
 /**
  * Protected (authenticated) procedure
@@ -119,6 +124,8 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  .use(tracing({ collectInput: true }))
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session || !ctx.session.user) {
