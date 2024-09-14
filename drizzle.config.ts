@@ -8,8 +8,7 @@ export default {
   driver: "turso",
   dbCredentials: {
     url: env.DATABASE_URL,
-    authToken:
-      env.NODE_ENV === "production" ? env.DATABASE_AUTH_TOKEN : undefined,
+    authToken: env.DATABASE_AUTH_TOKEN ?? undefined,
   },
   tablesFilter: ["college-connect_*"],
 } satisfies Config;
