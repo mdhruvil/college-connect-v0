@@ -17,6 +17,7 @@ export const client =
   createClient({
     url: env.DATABASE_URL,
     authToken: env.DATABASE_AUTH_TOKEN ?? undefined,
+    tls: false,
   });
 console.log("client", {
   url: env.DATABASE_URL,
