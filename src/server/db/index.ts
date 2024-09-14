@@ -18,10 +18,10 @@ export const client =
     url: env.DATABASE_URL,
     authToken: env.DATABASE_AUTH_TOKEN ?? undefined,
   });
-console.log(
-  "🚀 ~ env.DATABASE_AUTH_TOKEN ?? undefined:",
-  env.DATABASE_AUTH_TOKEN ?? undefined,
-);
+console.log("client", {
+  url: env.DATABASE_URL,
+  authToken: env.DATABASE_AUTH_TOKEN ?? undefined,
+});
 if (env.NODE_ENV !== "production") globalForDb.client = client;
 
-export const db = drizzle(client, { schema });
+export const db = drizzle(client, { schema, logger: true });
